@@ -2,9 +2,12 @@
 
 ## Task 2: 10-Word Speech Recognition
 
-### Objective: to develop a simple 10-word speech recognition system and investigate how different noise conditions and signal-to-noise ratios affect its recognition performance.
+> [!NOTE]
+> **Objective**
+>
+> To develop a simple 10-word speech recognition system and investigate how different noise conditions and signal-to-noise ratios affect its recognition performance.
 
-1. Dataset Preparation
+1. **Dataset Preparation**  
 
 Prepare a speech dataset containing 10 distinct spoken words. You may use an existing speech dataset or create your own dataset by recording the selected words.
 
@@ -34,7 +37,7 @@ In the report, describe the dataset and its preparation. Include:
 ✓ the procedure used to create the training and test sets;
 ✓ confirmation that there is no speaker overlap between the training and test sets.
 
-2. Feature Extraction
+2. **Feature Extraction**
 
 Convert the audio recordings into a feature representation suitable for speech recognition. Choose one feature representation (e.g., a spectrogram or log-mel spectrogram) and use the same representation and extraction parameters for all recordings.
 
@@ -49,7 +52,7 @@ In report:
 ✓ report the dimensions of the resulting feature representation;
 ✓ include and interpret a feature plot for at least one selected word.
 
-3. Model selection
+3. **Model selection**
 
 Use a single fixed model architecture throughout all experiments. The purpose of the model is to provide a consistent baseline for evaluating the effect of different noise conditions, rather than to optimize the model architecture.
 
@@ -63,7 +66,7 @@ In the report:
 ✓ report the main training parameters, such as loss function, optimizer, number of epochs, and batch size;
 ✓ describe the training and test sets and confirm that there is no speaker overlap between them.
 
-4. Model testing
+4. **Model testing**
 
 Evaluate the trained speech recognition model under different noise conditions. Apply noise only to the test recordings; the training data should remain unchanged.
 
