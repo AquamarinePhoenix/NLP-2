@@ -9,3 +9,7 @@ def output_audio_partition(dimAudio: pd.DataFrame, train_dimAudio: pd.DataFrame,
     write_file(train_dimAudio["word"].value_counts().reindex(WORDS))
     write_file("Test samples per word:")
     write_file(test_dimAudio["word"].value_counts().reindex(WORDS))
+
+def output_audio_features(dimAudio: pd.DataFrame):
+    write_file(f"{dimAudio[["file_path", "word", "speaker_id"]].head()}")
+    write_file(f"Feature shape: {dimAudio["features"].iloc[0].shape}")

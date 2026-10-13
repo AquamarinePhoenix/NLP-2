@@ -64,6 +64,7 @@ def histogram_plot(
     color: str | None = None,
     alpha: float = 0.9,
     ax: Axes | None = None,
+    show: bool = True,
 ) -> Axes:
     axes = _prepare_axes(ax, title=title, xlabel=xlabel, ylabel=ylabel)
     selected_color = color or _theme_colors()[0]
@@ -78,7 +79,9 @@ def histogram_plot(
     for patch in patches:
         _add_shadow(patch)
 
-    plt.show()
+    if show:
+        plt.show()
+
     return axes
 
 def scatter_plot(
@@ -93,6 +96,7 @@ def scatter_plot(
     size: float = 48,
     alpha: float = 0.85,
     ax: Axes | None = None,
+    show: bool = True,
 ) -> Axes:
     axes = _prepare_axes(ax, title=title, xlabel=xlabel, ylabel=ylabel)
     points = axes.scatter(
@@ -111,7 +115,9 @@ def scatter_plot(
     if label is not None:
         axes.legend(frameon=False)
 
-    plt.show()
+    if show:
+        plt.show()
+
     return axes
 
 def line_chart_plot(
@@ -126,6 +132,7 @@ def line_chart_plot(
     linewidth: float = 2.5,
     marker: str | None = "o",
     ax: Axes | None = None,
+    show: bool = True,
 ) -> Axes:
     axes = _prepare_axes(ax, title=title, xlabel=xlabel, ylabel=ylabel)
     x_values = list(x)
@@ -157,5 +164,7 @@ def line_chart_plot(
     if labels is not None:
         axes.legend(frameon=False)
 
-    plt.show()
+    if show:
+        plt.show()
+        
     return axes
