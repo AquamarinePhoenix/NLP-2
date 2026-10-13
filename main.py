@@ -1,10 +1,12 @@
 #%%
 
 from sklearn.model_selection import GroupShuffleSplit
+import matplotlib.pyplot as plt
 from nlplib.config import WORDS, RANDOM_STATE, TEST_SIZE
 from nlplib.write import clear_file
 from nlplib.preprocess import return_dimAudio
 from nlplib.output import output_audio_partition
+from nlplib.plot import histogram_plot
 
 def main():
     clear_file()
@@ -23,6 +25,8 @@ def main():
             break
 
     output_audio_partition(dimAudio, train_dimAudio, test_dimAudio)
+    histogram_plot(train_dimAudio["word"], bins = 10, title = "Training set distribution")
+    histogram_plot(test_dimAudio["word"], bins = 10, title = "Test set distribution")
 
 if __name__ == "__main__":
     main()

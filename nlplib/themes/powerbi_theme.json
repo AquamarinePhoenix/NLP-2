@@ -1,0 +1,82 @@
+{
+  "name": "Power BI Default",
+  "dataColors": [
+    "#118DFF",
+    "#12239E",
+    "#E66C37",
+    "#6B007B",
+    "#E044A7",
+    "#744EC2",
+    "#D9B300",
+    "#D64550",
+    "#197278",
+    "#1AAB40",
+    "#15C6F4",
+    "#4092FF",
+    "#FFA058",
+    "#BE5DCB",
+    "#F8C5E6",
+    "#AFA6E4",
+    "#F5E5A1",
+    "#EA9399",
+    "#65B7B9",
+    "#70D499",
+    "#82E6F5"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#252423",
+  "tableAccent": "#118DFF",
+  "textClasses": {
+    "callout": {
+      "fontFace": "Arial",
+      "fontSize": 45,
+      "color": "#252423"
+    },
+    "title": {
+      "fontFace": "Arial",
+      "fontSize": 12,
+      "color": "#252423"
+    },
+    "header": {
+      "fontFace": "Arial",
+      "fontSize": 10,
+      "color": "#252423"
+    },
+    "label": {
+      "fontFace": "Arial",
+      "fontSize": 9,
+      "color": "#605E5C"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [
+          {
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "show": false
+          }
+        ],
+        "visualHeader": [
+          {
+            "show": true
+          }
+        ],
+        "visualTooltip": [
+          {
+            "show": true
+          }
+        ]
+      }
+    }
+  }
+}

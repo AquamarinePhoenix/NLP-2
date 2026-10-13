@@ -7,6 +7,7 @@ WORDS = [
 
 DATASET_DIR = Path("data")
 OUTPUT_DIR = Path("output")
+THEME_PATH = Path(__file__).resolve().parent / "themes" / "powerbi_theme.json"
 
 AUDIO_FORMAT = ".wav"
 
