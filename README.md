@@ -109,7 +109,12 @@ palette and visual styling. The source theme is available as
 [`nlplib/powerbi_default_theme.json`](nlplib/powerbi_default_theme.json).
 
 ```python
-from nlplib.plot import histogram_plot, line_chart_plot, scatter_plot
+from nlplib.plot import (
+    histogram_plot,
+    line_chart_plot,
+    mel_spectrogram_plot,
+    scatter_plot,
+)
 
 histogram_plot(values, bins=20, title="Audio duration")
 scatter_plot(x_values, y_values, xlabel="Duration", ylabel="Energy")
@@ -118,6 +123,7 @@ line_chart_plot(
     [train_loss, validation_loss],
     labels=["Train", "Validation"],
 )
+mel_spectrogram_plot(log_mel_features, sample_rate=16_000, hop_length=160)
 ```
 
 Each function returns a Matplotlib `Axes`, so callers can add annotations,

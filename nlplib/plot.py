@@ -4,7 +4,8 @@ from typing import Any, Iterable, Sequence
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.patheffects import withSimplePatchShadow
-from nlplib.config import THEME_PATH
+import numpy as np
+from nlplib.config import HOP_LENGTH, SAMPLE_RATE, THEME_PATH
 
 def load_powerbi_theme() -> dict[str, Any]:
     with THEME_PATH.open(encoding="utf-8") as theme_file:
@@ -83,6 +84,7 @@ def histogram_plot(
         plt.show()
 
     return axes
+
 
 def scatter_plot(
     x: Iterable[float],
@@ -167,4 +169,51 @@ def line_chart_plot(
     if show:
         plt.show()
         
+    return axes
+
+def mel_spectrogram_plot(
+    spectrogram: np.ndarray | Sequence[Sequence[float]],
+    *,
+    sample_rate: int = SAMPLE_RATE,
+    hop_length: int = HOP_LENGTH,
+    title: str = "Mel spectrogram",
+    xlabel: str = "Time (s)",
+    ylabel: str = "Mel filter",
+    cmap: str = "viridis",
+    colorbar: bool = True,
+    ax: Axes | None = None,
+    show: bool = True,
+) -> Axes:
+    if sample_rate <= 0:
+        raise ValueError("sample_rate must be greater than zero")
+    if hop_length <= 0:
+        raise ValueError("hop_length must be greater than zero")
+
+    values = np.asarray(spectrogram)
+    if values.ndim != 2 or values.shape[0] == 0 or values.shape[1] == 0:
+        raise ValueError("spectrogram must be a non-empty two-dimensional array")
+
+    duration = values.shape[1] * hop_length / sample_rate
+    axes = _prepare_axes(ax, title=title, xlabel=xlabel, ylabel=ylabel)
+    axes.grid(False)
+    image = axes.imshow(
+        values,
+        origin="lower",
+        aspect="auto",
+        extent=(0, duration, 0, values.shape[0]),
+        cmap=cmap,
+        interpolation="nearest",
+    )
+    axes.set_xlim(0, duration)
+    axes.set_ylim(0, values.shape[0])
+
+    if colorbar:
+        bar = axes.figure.colorbar(image, ax=axes, pad=0.02)
+        bar.ax.tick_params(colors="#605E5C")
+        bar.outline.set_edgecolor("#B3B3B3")
+        bar.set_label("Power (dB)", color="#605E5C")
+
+    if show:
+        plt.show()
+
     return axes

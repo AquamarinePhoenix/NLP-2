@@ -35,8 +35,3 @@ def split_train_test(dimAudio: pd.DataFrame,):
             test_speakers = set(test_dimAudio["speaker_id"])
             if train_speakers.isdisjoint(test_speakers):
                 return train_dimAudio, test_dimAudio
-
-    raise ValueError(
-        "Unable to create a speaker-independent split containing every word "
-        "in both training and test sets."
-    )

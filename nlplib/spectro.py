@@ -1,6 +1,8 @@
 import librosa
 import numpy as np
 from nlplib.config import SAMPLE_RATE, NUM_SAMPLES, FFT_SIZE, FRAME_LENGTH, HOP_LENGTH, NUM_MELS
+from nlplib.plot import mel_spectrogram_plot
+from nlplib.output import output_audio_features
 
 def extract_features_from_audio(audio: np.ndarray) -> np.ndarray:
     if len(audio) < NUM_SAMPLES:
@@ -23,7 +25,12 @@ def extract_features_from_audio(audio: np.ndarray) -> np.ndarray:
 
     return log_mel_spec
 
-
 def extract_features(filepath) -> np.ndarray:
     audio, _ = librosa.load(filepath, sr = SAMPLE_RATE, mono = True)
     return extract_features_from_audio(audio)
+
+def get_features(list: list[dict[str, str]]):
+    list["features"] = list["file_path"].apply(extract_features)
+    output_audio_features(list)
+    mel_spectrogram_plot(list["features"].iloc[0], title = f"Mel spectrogram - {list['word'].iloc[0]}", show = True)
+    return list
