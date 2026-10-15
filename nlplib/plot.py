@@ -85,43 +85,6 @@ def histogram_plot(
 
     return axes
 
-
-def scatter_plot(
-    x: Iterable[float],
-    y: Iterable[float],
-    *,
-    title: str = "Scatter plot",
-    xlabel: str | None = None,
-    ylabel: str | None = None,
-    color: str | None = None,
-    label: str | None = None,
-    size: float = 48,
-    alpha: float = 0.85,
-    ax: Axes | None = None,
-    show: bool = True,
-) -> Axes:
-    axes = _prepare_axes(ax, title=title, xlabel=xlabel, ylabel=ylabel)
-    points = axes.scatter(
-        list(x),
-        list(y),
-        s=size,
-        color=color or _theme_colors()[1],
-        alpha=alpha,
-        edgecolors="#FFFFFF",
-        linewidths=0.8,
-        label=label,
-    )
-    points.set_path_effects(
-        [withSimplePatchShadow(offset=(1.5, -1.5), alpha=0.2)]
-    )
-    if label is not None:
-        axes.legend(frameon=False)
-
-    if show:
-        plt.show()
-
-    return axes
-
 def line_chart_plot(
     x: Iterable[Any],
     y: Iterable[float] | Sequence[Iterable[float]],

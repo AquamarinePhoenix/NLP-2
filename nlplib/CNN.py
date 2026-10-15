@@ -6,7 +6,13 @@ from tensorflow.keras import layers
 from nlplib.config import WORDS, SEED
 from nlplib.write import write_file
 
-def run_CNN(train_dimAudio: pd.DataFrame, test_dimAudio: pd.DataFrame):
+def run_CNN(
+    train_dimAudio: pd.DataFrame,
+    test_dimAudio: pd.DataFrame,
+    *,
+    epochs: int = 15,
+    batch_size: int = 32,
+):
     tf.keras.utils.set_random_seed(SEED)
 
     label_to_id = {word: i for i, word in enumerate(WORDS)}
@@ -58,14 +64,14 @@ def run_CNN(train_dimAudio: pd.DataFrame, test_dimAudio: pd.DataFrame):
     history = model.fit(
         X_train,
         y_train,
-        epochs=15,
-        batch_size=32,
+        epochs=epochs,
+        batch_size=batch_size,
         shuffle=True,
-        verbose=1
+        verbose=1,
     )
 
     test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose = 0)
 
     write_file(f"Test loss: {test_loss:.4f}")
     write_file(f"Test accuracy: {test_accuracy:.4f}")
-    return model, mean, std
+    return model, mean, std, history

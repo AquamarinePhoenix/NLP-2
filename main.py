@@ -25,11 +25,11 @@ def main():
 
 #%%
     write_file("3. Model selection")
-    model, mean, std = run_CNN(train_dimAudio, test_dimAudio)
+    model, mean, std, history = run_CNN(train_dimAudio, test_dimAudio)
 
 #%%
     write_file("4. Model testing")
-    evaluate_noise_conditions(model, test_dimAudio, mean, std)
+    evaluate_noise_conditions(model, test_dimAudio, mean, std, history)
 
 #%%
 if __name__ == "__main__":

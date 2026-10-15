@@ -1,10 +1,12 @@
 from pathlib import Path
 
 import librosa
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
 from nlplib.config import DATASET_DIR, SAMPLE_RATE, NUM_SAMPLES, WORDS
+from nlplib.plot import line_chart_plot
 from nlplib.spectro import extract_features_from_audio
 from nlplib.write import write_file
 
@@ -48,8 +50,26 @@ def evaluate_noise_conditions(
     test_dimAudio: pd.DataFrame,
     mean: float,
     std: float,
+    history,
     snr_levels: tuple[int, ...] = (30, 20, 10, 0),
 ) -> None:
+    
+    epochs = range(1, len(history.history["loss"]) + 1)
+    _, chart_axes = plt.subplots()
+    
+    line_chart_plot(
+        epochs,
+        [history.history["loss"], history.history["accuracy"]],
+        title="Training loss and accuracy by epoch",
+        xlabel="Epoch",
+        ylabel="Value",
+        labels=["Loss", "Accuracy"],
+        ax=chart_axes,
+        show=False,
+    )
+    chart_axes.set_xticks(list(epochs))
+    plt.show()
+
     label_to_id = {word: i for i, word in enumerate(WORDS)}
     labels = test_dimAudio["word"].map(label_to_id).to_numpy()
     background_files = _background_files()
