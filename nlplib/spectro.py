@@ -29,8 +29,17 @@ def extract_features(filepath) -> np.ndarray:
     audio, _ = librosa.load(filepath, sr = SAMPLE_RATE, mono = True)
     return extract_features_from_audio(audio)
 
-def get_features(list: list[dict[str, str]]):
+def get_features(list: list[dict[str, str]], dataset_name: str = "dataset", show = False):
     list["features"] = list["file_path"].apply(extract_features)
     output_audio_features(list)
-    mel_spectrogram_plot(list["features"].iloc[0], title = f"Mel spectrogram - {list['word'].iloc[0]}", show = True)
+
+    mel_spectrogram_plot(
+        list["features"].iloc[0],
+        title = (
+            f'Log-mel spectrogram for {dataset_name} set'
+            f' using word "{list["word"].iloc[0]}"'
+        ),
+        show = show
+    )
+    
     return list

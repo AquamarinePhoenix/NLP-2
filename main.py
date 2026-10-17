@@ -20,8 +20,8 @@ def main():
     histogram_plot(test_dimAudio["word"], bins = 10, title = "Test set distribution", show = True)
 #%%
     write_file("2. Feature Extraction")
-    train_dimAudio = get_features(train_dimAudio)
-    test_dimAudio = get_features(test_dimAudio)
+    train_dimAudio = get_features(train_dimAudio, "train", show = True)
+    test_dimAudio = get_features(test_dimAudio, "test", show = True)
 
 #%%
     write_file("3. Model selection")

@@ -80,6 +80,12 @@ def histogram_plot(
     for patch in patches:
         _add_shadow(patch)
 
+    axes.bar_label(
+        patches,
+        fmt="%d",
+        padding=3
+    )
+
     if show:
         plt.show()
 

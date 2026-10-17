@@ -4,6 +4,7 @@ import librosa
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 from nlplib.config import DATASET_DIR, SAMPLE_RATE, NUM_SAMPLES, WORDS
 from nlplib.plot import line_chart_plot
@@ -44,7 +45,6 @@ def _noisy_audio(
     noise = _fit_length(noise, len(audio))
     return audio + _scale_to_snr(audio, noise, snr_db)
 
-
 def evaluate_noise_conditions(
     model,
     test_dimAudio: pd.DataFrame,
@@ -53,10 +53,10 @@ def evaluate_noise_conditions(
     history,
     snr_levels: tuple[int, ...] = (30, 20, 10, 0),
 ) -> None:
-    
+
     epochs = range(1, len(history.history["loss"]) + 1)
     _, chart_axes = plt.subplots()
-    
+
     line_chart_plot(
         epochs,
         [history.history["loss"], history.history["accuracy"]],
@@ -76,7 +76,8 @@ def evaluate_noise_conditions(
 
     if not background_files:
         raise FileNotFoundError(
-            f"No background recordings found in {DATASET_DIR / '_background_noise_'}"
+            f"No background recordings found in "
+            f"{DATASET_DIR / '_background_noise_'}"
         )
 
     conditions: list[tuple[str, int | None]] = [("Clean", None)]
@@ -85,18 +86,61 @@ def evaluate_noise_conditions(
 
     for condition, snr_db in conditions:
         features = []
+
         for index, filepath in enumerate(test_dimAudio["file_path"]):
             audio = _load_audio(filepath)
+
             if condition == "White noise":
-                noise = np.random.default_rng(index).normal(0, 1, len(audio))
+                noise = np.random.default_rng(index).normal(
+                    0, 1, len(audio)
+                )
                 audio = _noisy_audio(audio, noise, snr_db)
+
             elif condition == "Background noise":
-                noise = _load_audio(background_files[index % len(background_files)])
+                noise = _load_audio(
+                    background_files[index % len(background_files)]
+                )
                 audio = _noisy_audio(audio, noise, snr_db)
+
             features.append(extract_features_from_audio(audio))
 
         inputs = np.stack(features)[..., np.newaxis].astype("float32")
         inputs = (inputs - mean) / std
-        loss, accuracy = model.evaluate(inputs, labels, verbose = 0)
+
+        loss, accuracy = model.evaluate(inputs, labels, verbose=0)
+
         suffix = "" if snr_db is None else f" ({snr_db} dB)"
-        write_file(f"{condition}{suffix} - loss: {loss:.4f}, accuracy: {accuracy:.4f}")
+        write_file(
+            f"{condition}{suffix} - loss: {loss:.4f}, "
+            f"accuracy: {accuracy:.4f}"
+        )
+
+        probabilities = model.predict(inputs, verbose=0)
+        predictions = np.argmax(probabilities, axis=1)
+
+        cm = confusion_matrix(
+            labels,
+            predictions,
+            labels=list(range(len(WORDS))),
+        )
+
+        display = ConfusionMatrixDisplay(
+            confusion_matrix=cm,
+            display_labels=WORDS,
+        )
+
+        _, ax = plt.subplots(figsize=(8, 6))
+        display.plot(
+            ax=ax,
+            cmap="Blues",
+            values_format="d",
+            colorbar=False,
+        )
+
+        title = condition if snr_db is None else f"{condition} ({snr_db} dB)"
+        ax.set_title(f"Confusion Matrix — {title}")
+        ax.set_xlabel("Predicted digit")
+        ax.set_ylabel("Actual digit")
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.show()
