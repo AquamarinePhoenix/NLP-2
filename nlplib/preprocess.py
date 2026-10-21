@@ -11,7 +11,10 @@ def return_dimAudio() -> pd.DataFrame:
 
         for file_path in word_dir.glob("*" + AUDIO_FORMAT):
 
-            file = re.match(r"(.+)_nohash_\d+\.wav$", file_path.name)
+            file = re.match(
+                r"(.+)_nohash_\d+(?:\(\d+\))?\.wav$",
+                file_path.name,
+            )
             dimAudio.append({
                 "file_path": file_path,
                 "word": word,
